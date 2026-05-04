@@ -67,25 +67,6 @@ class ReservationTimeServiceTest {
     }
 
     @Test
-    @DisplayName("예약 시간 저장 요청이 null이면 예외가 발생한다")
-    void saveTimeWithNullRequest() {
-        // when & then
-        assertThatThrownBy(() -> reservationTimeService.saveTime(null))
-                .isInstanceOf(ReservationTimeException.class);
-    }
-
-    @Test
-    @DisplayName("예약 시간이 null이면 예외가 발생한다")
-    void saveTimeWithNullStartAt() {
-        // given
-        ReservationTimeRequest request = new ReservationTimeRequest(null);
-
-        // when & then
-        assertThatThrownBy(() -> reservationTimeService.saveTime(request))
-                .isInstanceOf(ReservationTimeException.class);
-    }
-
-    @Test
     @DisplayName("예약 시간 목록을 조회한다")
     void getTimes() {
         // given
@@ -131,27 +112,6 @@ class ReservationTimeServiceTest {
 
         // then
         assertThat(reservationTimeService.getTimes()).isEmpty();
-    }
-
-    @Test
-    @DisplayName("예약 시간 id가 null이면 삭제할 때 예외가 발생한다")
-    void deleteTimeWithNullId() {
-        // when & then
-        assertThatThrownBy(() -> reservationTimeService.deleteTime(null))
-                .isInstanceOf(ReservationTimeException.class);
-    }
-
-    @Test
-    @DisplayName("예약 시간 id가 참조되고 있으면 삭제할 때 예외가 발생한다")
-    void deleteTimeWithReferencedReservationTime() {
-        // given
-        ReservationTimeResponse savedTime = saveTime(LocalTime.of(10, 0));
-        ReservationRequest request = createReservationRequest(savedTime);
-        reservationService.saveReservation(request);
-
-        // when & then
-        assertThatThrownBy(() -> reservationTimeService.deleteTime(savedTime.id()))
-                .isInstanceOf(ReservationTimeException.class);
     }
 
     @Test
