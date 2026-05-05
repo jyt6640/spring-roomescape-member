@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import roomescape.global.exception.customException.ReservationTimeException;
+import roomescape.global.exception.ReservationTimeException;
 import roomescape.domain.reservation.FakeReservationRepository;
 import roomescape.domain.reservation.FakeReservationTimeRepository;
 import roomescape.reservation.application.ReservationService;

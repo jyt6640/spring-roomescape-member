@@ -1,7 +1,7 @@
 package roomescape.reservation.presentation.dto;
 
 import roomescape.global.exception.ErrorCode;
-import roomescape.global.exception.customException.ReservationTimeException;
+import roomescape.global.exception.ReservationTimeException;
 
 public record ReservationTimeRequest(
         String startAt
@@ -12,7 +12,7 @@ public record ReservationTimeRequest(
 
     private void validatStartAtNotEmpty(String startAt) {
         if (startAt == null) {
-            throw new ReservationTimeException(ErrorCode.RESERVATION_TIME_START_AT_NULL);
+            throw new ReservationTimeException(ErrorCode.RESERVATION_TIME_REQUEST_NULL);
         }
     }
 }

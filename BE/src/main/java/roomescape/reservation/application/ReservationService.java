@@ -4,8 +4,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import roomescape.global.exception.ErrorCode;
-import roomescape.global.exception.customException.ReservationException;
-import roomescape.global.exception.customException.ReservationTimeException;
+import roomescape.global.exception.ReservationException;
+import roomescape.global.exception.ReservationTimeException;
 import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationResult;
 import roomescape.reservation.domain.Reservation;
@@ -50,7 +50,7 @@ public class ReservationService {
 
     public void deleteReservation(Long id) {
         if (id == null) {
-            throw new ReservationException(ErrorCode.RESERVATION_ID_NULL);
+            throw new ReservationException(ErrorCode.RESERVATION_NOT_FOUND);
         }
         reservationRepository.deleteById(id);
     }

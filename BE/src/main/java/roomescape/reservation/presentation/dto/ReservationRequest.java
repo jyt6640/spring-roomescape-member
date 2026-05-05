@@ -1,8 +1,8 @@
 package roomescape.reservation.presentation.dto;
 
 import roomescape.global.exception.ErrorCode;
-import roomescape.global.exception.customException.ReservationException;
-import roomescape.global.exception.customException.ReservationTimeException;
+import roomescape.global.exception.ReservationException;
+import roomescape.global.exception.ReservationTimeException;
 
 public record ReservationRequest(
         String name,
@@ -17,19 +17,19 @@ public record ReservationRequest(
 
     private static void validateNameNotEmpty(String name) {
         if (name == null || name.trim().isBlank()) {
-            throw new ReservationException(ErrorCode.RESERVATION_NAME_EMPTY);
+            throw new ReservationException(ErrorCode.RESERVATION_REQUEST_NULL);
         }
     }
     
     private static void validateTimeIdNotEmpty(Long timeId) {
         if (timeId == null) {
-            throw new ReservationTimeException(ErrorCode.RESERVATION_TIME_ID_NULL);
+            throw new ReservationTimeException(ErrorCode.RESERVATION_REQUEST_NULL);
         }
     }
 
     private static void validateDateNotEmpty(String date) {
         if (date == null) {
-            throw new ReservationException(ErrorCode.RESERVATION_DATE_NULL);
+            throw new ReservationException(ErrorCode.RESERVATION_REQUEST_NULL);
         }
     }
 }
