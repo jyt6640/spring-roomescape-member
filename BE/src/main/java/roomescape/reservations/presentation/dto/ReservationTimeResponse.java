@@ -1,15 +1,15 @@
 package roomescape.reservations.presentation.dto;
 
-import roomescape.reservations.entity.ReservationTime;
+import roomescape.reservations.application.dto.ReservationTimeResult;
 
 public record ReservationTimeResponse(
         Long id,
         String startAt
 ) {
-    public static ReservationTimeResponse from(ReservationTime reservationTime) {
+    public static ReservationTimeResponse createResponse(ReservationTimeResult reservationTimeResult) {
         return new ReservationTimeResponse(
-                reservationTime.id(),
-                reservationTime.startAt().toString()
+                reservationTimeResult.id(),
+                reservationTimeResult.startAt()
         );
     }
 }

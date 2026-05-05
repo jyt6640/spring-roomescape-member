@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import roomescape.global.exception.ErrorCode;
 import roomescape.global.exception.customException.ReservationTimeException;
-import roomescape.reservations.entity.ReservationRepository;
-import roomescape.reservations.entity.ReservationTime;
-import roomescape.reservations.entity.ReservationTimeRepository;
-import roomescape.reservations.presentation.dto.ReservationTimeRequest;
-import roomescape.reservations.presentation.dto.ReservationTimeResponse;
+import roomescape.reservations.application.dto.ReservationTimeCreateCommand;
+import roomescape.reservations.application.dto.ReservationTimeResult;
+import roomescape.reservations.domain.ReservationRepository;
+import roomescape.reservations.domain.ReservationTime;
+import roomescape.reservations.domain.ReservationTimeRepository;
 
 @Service
 public class ReservationTimeService {
@@ -25,18 +25,18 @@ public class ReservationTimeService {
     }
 
     @Transactional
-    public ReservationTimeResponse saveTime(ReservationTimeRequest request) {
+    public ReservationTimeResult saveTime(ReservationTimeCreateCommand request) {
         ReservationTime reservationTime = ReservationTime.createWithNullId(
                 request.startAt()
         );
         ReservationTime savedReservationTime = reservationTimeRepository.save(reservationTime);
-        return ReservationTimeResponse.from(savedReservationTime);
+        return ReservationTimeResult.createWithId(savedReservationTime);
     }
 
-    public List<ReservationTimeResponse> getTimes() {
+    public List<ReservationTimeResult> getTimes() {
         List<ReservationTime> times = reservationTimeRepository.findAll();
         return times.stream()
-                .map(ReservationTimeResponse::from)
+                .map(ReservationTimeResult::createWithId)
                 .toList();
     }
 

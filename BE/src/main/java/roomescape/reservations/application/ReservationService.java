@@ -6,12 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import roomescape.global.exception.ErrorCode;
 import roomescape.global.exception.customException.ReservationException;
 import roomescape.global.exception.customException.ReservationTimeException;
-import roomescape.reservations.entity.Reservation;
-import roomescape.reservations.entity.ReservationTime;
-import roomescape.reservations.entity.ReservationRepository;
-import roomescape.reservations.entity.ReservationTimeRepository;
-import roomescape.reservations.presentation.dto.ReservationRequest;
-import roomescape.reservations.presentation.dto.ReservationResponse;
+import roomescape.reservations.application.dto.ReservationCreateCommand;
+import roomescape.reservations.application.dto.ReservationResult;
+import roomescape.reservations.domain.Reservation;
+import roomescape.reservations.domain.ReservationTime;
+import roomescape.reservations.domain.ReservationRepository;
+import roomescape.reservations.domain.ReservationTimeRepository;
+
 
 @Service
 public class ReservationService {
@@ -28,22 +29,22 @@ public class ReservationService {
     }
 
     @Transactional
-    public ReservationResponse saveReservation(ReservationRequest request) {
-        ReservationTime time = reservationTimeRepository.findById(request.timeId())
+    public ReservationResult saveReservation(ReservationCreateCommand reservationCreate) {
+        ReservationTime time = reservationTimeRepository.findById(reservationCreate.timeId())
                 .orElseThrow(() -> new ReservationTimeException(ErrorCode.RESERVATION_TIME_NOT_FOUND));
         Reservation reservation = Reservation.createWithNullId(
-                request.name(),
-                request.date(),
+                reservationCreate.name(),
+                reservationCreate.date(),
                 time
         );
         Reservation savedReservation = reservationRepository.save(reservation);
-        return ReservationResponse.from(savedReservation);
+        return ReservationResult.create(savedReservation);
     }
 
-    public List<ReservationResponse> getReservations() {
+    public List<ReservationResult> getReservations() {
         List<Reservation> reservations = reservationRepository.findAll();
         return reservations.stream()
-                .map(ReservationResponse::from)
+                .map(ReservationResult::create)
                 .toList();
     }
 

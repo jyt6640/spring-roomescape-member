@@ -7,9 +7,9 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import roomescape.reservations.entity.Reservation;
-import roomescape.reservations.entity.ReservationRepository;
-import roomescape.reservations.entity.ReservationTime;
+import roomescape.reservations.domain.Reservation;
+import roomescape.reservations.domain.ReservationRepository;
+import roomescape.reservations.domain.ReservationTime;
 
 @Repository
 public class ReservationJdbcTemplateRepository implements ReservationRepository {

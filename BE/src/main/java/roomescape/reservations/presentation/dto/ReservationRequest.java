@@ -7,7 +7,7 @@ import roomescape.global.exception.customException.ReservationTimeException;
 
 public record ReservationRequest(
         String name,
-        LocalDate date,
+        String date,
         Long timeId
 ) {
     public ReservationRequest{
@@ -28,7 +28,7 @@ public record ReservationRequest(
         }
     }
 
-    private static void validateDateNotEmpty(LocalDate date) {
+    private static void validateDateNotEmpty(String date) {
         if (date == null) {
             throw new ReservationException(ErrorCode.RESERVATION_DATE_NULL);
         }

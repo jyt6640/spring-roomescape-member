@@ -1,6 +1,7 @@
 package roomescape.reservations.presentation;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import roomescape.reservations.application.ReservationService;
+import roomescape.reservations.application.dto.ReservationCreateCommand;
+import roomescape.reservations.application.dto.ReservationResult;
 import roomescape.reservations.presentation.dto.ReservationRequest;
 import roomescape.reservations.presentation.dto.ReservationResponse;
 
@@ -26,14 +29,24 @@ public class ReservationController {
     public ResponseEntity<ReservationResponse> saveReservation(
             @RequestBody ReservationRequest request
     ) {
-        ReservationResponse response = service.saveReservation(request);
+        ReservationResult response = service.saveReservation(
+                new ReservationCreateCommand(
+                        request.name(),
+                        LocalDate.parse(request.date()),
+                        request.timeId()
+                )
+        );
         return ResponseEntity.created(URI.create("/reservations/" + response.id()))
-                .body(response);
+                .body(ReservationResponse.createResponse(response));
     }
 
     @GetMapping("/reservations")
     public ResponseEntity<List<ReservationResponse>> getReservations() {
-        return ResponseEntity.ok(service.getReservations());
+        List<ReservationResult> reservationResults = service.getReservations();
+        return ResponseEntity.ok(reservationResults.stream()
+                .map(ReservationResponse::createResponse)
+                .toList()
+        );
     }
 
     @DeleteMapping("/reservations/{id}")
