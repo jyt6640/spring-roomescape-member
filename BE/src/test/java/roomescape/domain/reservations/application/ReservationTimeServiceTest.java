@@ -9,16 +9,15 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import roomescape.global.exception.customException.ReservationTimeException;
-import roomescape.reservations.application.ReservationService;
-import roomescape.reservations.application.ReservationTimeService;
 import roomescape.domain.reservations.FakeReservationRepository;
 import roomescape.domain.reservations.FakeReservationTimeRepository;
-import roomescape.reservations.entity.ReservationRepository;
-import roomescape.reservations.entity.ReservationTimeRepository;
-import roomescape.reservations.presentation.dto.ReservationRequest;
-import roomescape.reservations.presentation.dto.ReservationTimeRequest;
-import roomescape.reservations.presentation.dto.ReservationTimeResponse;
+import roomescape.reservations.application.ReservationService;
+import roomescape.reservations.application.ReservationTimeService;
+import roomescape.reservations.application.dto.ReservationCreateCommand;
+import roomescape.reservations.application.dto.ReservationTimeCreateCommand;
+import roomescape.reservations.application.dto.ReservationTimeResult;
+import roomescape.reservations.domain.ReservationRepository;
+import roomescape.reservations.domain.ReservationTimeRepository;
 
 class ReservationTimeServiceTest {
 
@@ -37,30 +36,30 @@ class ReservationTimeServiceTest {
         reservationTimeService = new ReservationTimeService(reservationTimeRepository, reservationRepository);
     }
 
-    private ReservationRequest createReservationRequest(ReservationTimeResponse time) {
-        return new ReservationRequest(
+    private ReservationCreateCommand createReservationCommand(ReservationTimeResult time) {
+        return new ReservationCreateCommand(
                 "브라운",
                 TODAY,
                 time.id()
         );
     }
 
-    private ReservationTimeRequest createReservationTimeRequest() {
-        return new ReservationTimeRequest(LocalTime.of(10, 0));
+    private ReservationTimeCreateCommand createReservationTimeCommand() {
+        return ReservationTimeCreateCommand.create(LocalTime.of(10, 0));
     }
 
-    private ReservationTimeResponse saveTime(LocalTime startAt) {
-        return reservationTimeService.saveTime(new ReservationTimeRequest(startAt));
+    private ReservationTimeResult saveTime(LocalTime startAt) {
+        return reservationTimeService.saveTime(ReservationTimeCreateCommand.create(startAt));
     }
 
     @Test
     @DisplayName("예약 시간을 저장한다")
     void saveTime() {
         // given
-        ReservationTimeRequest request = createReservationTimeRequest();
+        ReservationTimeCreateCommand command = createReservationTimeCommand();
 
         // when
-        ReservationTimeResponse savedTime = reservationTimeService.saveTime(request);
+        ReservationTimeResult savedTime = reservationTimeService.saveTime(command);
 
         // then
         assertThat(savedTime.id()).isNotNull();
@@ -70,11 +69,11 @@ class ReservationTimeServiceTest {
     @DisplayName("예약 시간 목록을 조회한다")
     void getTimes() {
         // given
-        ReservationTimeResponse firstTime = saveTime(LocalTime.of(10, 0));
-        ReservationTimeResponse secondTime = saveTime(LocalTime.of(11, 0));
+        ReservationTimeResult firstTime = saveTime(LocalTime.of(10, 0));
+        ReservationTimeResult secondTime = saveTime(LocalTime.of(11, 0));
 
         // when
-        List<ReservationTimeResponse> times = reservationTimeService.getTimes();
+        List<ReservationTimeResult> times = reservationTimeService.getTimes();
 
         // then
         assertThat(times).hasSize(2);
@@ -85,7 +84,7 @@ class ReservationTimeServiceTest {
     @DisplayName("예약 시간이 없으면 빈 목록을 조회한다")
     void getTimesWhenEmpty() {
         // when
-        List<ReservationTimeResponse> times = reservationTimeService.getTimes();
+        List<ReservationTimeResult> times = reservationTimeService.getTimes();
 
         // then
         assertThat(times).isEmpty();
@@ -95,7 +94,7 @@ class ReservationTimeServiceTest {
     @DisplayName("예약 시간을 삭제한다")
     void deleteTime() {
         // given
-        ReservationTimeResponse savedTime = saveTime(LocalTime.of(10, 0));
+        ReservationTimeResult savedTime = saveTime(LocalTime.of(10, 0));
 
         // when
         reservationTimeService.deleteTime(savedTime.id());
@@ -118,9 +117,9 @@ class ReservationTimeServiceTest {
     @DisplayName("예약 시간 id가 예약에서 참조되고 있는지 확인 기능")
     void existsByReservationTimeId() {
         // given
-        ReservationTimeResponse savedTime = saveTime(LocalTime.of(10, 0));
-        ReservationRequest request = createReservationRequest(savedTime);
-        reservationService.saveReservation(request);
+        ReservationTimeResult savedTime = saveTime(LocalTime.of(10, 0));
+        ReservationCreateCommand command = createReservationCommand(savedTime);
+        reservationService.saveReservation(command);
 
         // when
         boolean exists = reservationRepository.existsByReservationTimeId(savedTime.id());

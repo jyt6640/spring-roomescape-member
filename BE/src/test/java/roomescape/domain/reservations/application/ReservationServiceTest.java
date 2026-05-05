@@ -9,16 +9,15 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import roomescape.global.exception.customException.ReservationException;
 import roomescape.global.exception.customException.ReservationTimeException;
-import roomescape.reservations.application.ReservationService;
 import roomescape.domain.reservations.FakeReservationRepository;
 import roomescape.domain.reservations.FakeReservationTimeRepository;
-import roomescape.reservations.entity.ReservationTime;
-import roomescape.reservations.entity.ReservationRepository;
-import roomescape.reservations.entity.ReservationTimeRepository;
-import roomescape.reservations.presentation.dto.ReservationRequest;
-import roomescape.reservations.presentation.dto.ReservationResponse;
+import roomescape.reservations.application.ReservationService;
+import roomescape.reservations.application.dto.ReservationCreateCommand;
+import roomescape.reservations.application.dto.ReservationResult;
+import roomescape.reservations.domain.ReservationRepository;
+import roomescape.reservations.domain.ReservationTime;
+import roomescape.reservations.domain.ReservationTimeRepository;
 
 class ReservationServiceTest {
 
@@ -41,17 +40,17 @@ class ReservationServiceTest {
         );
     }
 
-    private ReservationRequest createReservationRequest(ReservationTime time) {
-        return new ReservationRequest(
+    private ReservationCreateCommand createReservationCommand(ReservationTime time) {
+        return new ReservationCreateCommand(
                 "브라운",
                 TODAY,
                 time.id()
         );
     }
 
-    private ReservationResponse saveReservation(String name, LocalDate date, ReservationTime time) {
-        ReservationRequest request = new ReservationRequest(name, date, time.id());
-        return reservationService.saveReservation(request);
+    private ReservationResult saveReservation(String name, LocalDate date, ReservationTime time) {
+        ReservationCreateCommand command = new ReservationCreateCommand(name, date, time.id());
+        return reservationService.saveReservation(command);
     }
 
     @Test
@@ -59,10 +58,10 @@ class ReservationServiceTest {
     void saveReservation() {
         // given
         ReservationTime time = createReservationTime();
-        ReservationRequest request = createReservationRequest(time);
+        ReservationCreateCommand command = createReservationCommand(time);
 
         // when
-        ReservationResponse savedReservation = reservationService.saveReservation(request);
+        ReservationResult savedReservation = reservationService.saveReservation(command);
 
         // then
         assertThat(savedReservation.time().id()).isEqualTo(time.id());
@@ -72,14 +71,14 @@ class ReservationServiceTest {
     @DisplayName("존재하지 않는 예약 시간으로 예약하면 예외가 발생한다")
     void saveReservationWithNotFoundTime() {
         // given
-        ReservationRequest request = new ReservationRequest(
+        ReservationCreateCommand command = new ReservationCreateCommand(
                 "브라운",
                 TODAY,
                 999L
         );
 
         // when & then
-        assertThatThrownBy(() -> reservationService.saveReservation(request))
+        assertThatThrownBy(() -> reservationService.saveReservation(command))
                 .isInstanceOf(ReservationTimeException.class);
     }
 
@@ -88,14 +87,14 @@ class ReservationServiceTest {
     void getReservations() {
         // given
         ReservationTime time = createReservationTime();
-        ReservationResponse savedReservation = saveReservation(
+        ReservationResult savedReservation = saveReservation(
                 "브라운",
                 TODAY,
                 time
         );
 
         // when
-        List<ReservationResponse> reservations = reservationService.getReservations();
+        List<ReservationResult> reservations = reservationService.getReservations();
 
         // then
         assertThat(reservations).hasSize(1);
@@ -106,7 +105,7 @@ class ReservationServiceTest {
     @DisplayName("예약이 없으면 빈 목록을 조회한다")
     void getReservationsWhenEmpty() {
         // given & when
-        List<ReservationResponse> reservations = reservationService.getReservations();
+        List<ReservationResult> reservations = reservationService.getReservations();
 
         // then
         assertThat(reservations).isEmpty();
@@ -117,7 +116,7 @@ class ReservationServiceTest {
     void deleteReservation() {
         // given
         ReservationTime time = createReservationTime();
-        ReservationResponse savedReservation = saveReservation(
+        ReservationResult savedReservation = saveReservation(
                 "브라운",
                 TODAY,
                 time

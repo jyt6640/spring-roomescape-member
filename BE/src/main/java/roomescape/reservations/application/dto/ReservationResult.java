@@ -13,7 +13,7 @@ public record ReservationResult(
                 reservation.id(),
                 reservation.name(),
                 reservation.date().toString(),
-                ReservationTimeResult.createWithNullId(reservation.time().toString())
+                ReservationTimeResult.createWithId(reservation.time())
         );
     }
 }
