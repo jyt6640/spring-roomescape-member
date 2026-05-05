@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import roomescape.domain.reservation.FakeReservationRepository;
 import roomescape.domain.reservation.FakeReservationTimeRepository;
+import roomescape.domain.theme.FakeThemeRepository;
 import roomescape.reservation.application.ReservationService;
 import roomescape.reservation.application.ReservationTimeService;
 import roomescape.reservation.application.dto.ReservationCreateCommand;
@@ -18,6 +19,10 @@ import roomescape.reservation.application.dto.ReservationTimeCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeResult;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTimeRepository;
+import roomescape.theme.application.ThemeService;
+import roomescape.theme.application.dto.ThemeCreateCommand;
+import roomescape.theme.application.dto.ThemeResult;
+import roomescape.theme.domain.ThemeRepository;
 
 class ReservationTimeServiceTest {
 
@@ -27,20 +32,25 @@ class ReservationTimeServiceTest {
     private ReservationService reservationService;
     private ReservationTimeRepository reservationTimeRepository;
     private ReservationTimeService reservationTimeService;
+    private ThemeRepository themeRepository;
+    private ThemeService themeService;
 
     @BeforeEach
     void setUp() {
         reservationRepository = new FakeReservationRepository();
         reservationTimeRepository = new FakeReservationTimeRepository();
-        reservationService = new ReservationService(reservationRepository, reservationTimeRepository);
+        themeRepository = new FakeThemeRepository();
+        themeService = new ThemeService(themeRepository);
+        reservationService = new ReservationService(reservationRepository, reservationTimeRepository, themeRepository);
         reservationTimeService = new ReservationTimeService(reservationTimeRepository, reservationRepository);
     }
 
-    private ReservationCreateCommand createReservationCommand(ReservationTimeResult time) {
+    private ReservationCreateCommand createReservationCommand(ReservationTimeResult time, ThemeResult theme) {
         return new ReservationCreateCommand(
                 "브라운",
                 TODAY,
-                time.id()
+                time.id(),
+                theme.id()
         );
     }
 
@@ -48,8 +58,16 @@ class ReservationTimeServiceTest {
         return ReservationTimeCreateCommand.create(LocalTime.of(10, 0));
     }
 
+    private ThemeCreateCommand createThemeCommand() {
+        return ThemeCreateCommand.create("공포", "무서움", "/images/theme/1.jpg");
+    }
+
     private ReservationTimeResult saveTime(LocalTime startAt) {
         return reservationTimeService.saveTime(ReservationTimeCreateCommand.create(startAt));
+    }
+
+    private ThemeResult saveTheme(String name, String description, String thumbnail) {
+        return themeService.saveTheme(ThemeCreateCommand.create(name, description, thumbnail));
     }
 
     @Test
@@ -118,7 +136,8 @@ class ReservationTimeServiceTest {
     void existsByReservationTimeId() {
         // given
         ReservationTimeResult savedTime = saveTime(LocalTime.of(10, 0));
-        ReservationCreateCommand command = createReservationCommand(savedTime);
+        ThemeResult themeResult = saveTheme("공포", "무서움", "/images/theme/1.jpg");
+        ReservationCreateCommand command = createReservationCommand(savedTime, themeResult);
         reservationService.saveReservation(command);
 
         // when

@@ -19,7 +19,8 @@ public class FakeReservationRepository implements ReservationRepository {
                     sequence++,
                     reservation.name(),
                     reservation.date(),
-                    reservation.time()
+                    reservation.time(),
+                    reservation.theme()
             );
             store.put(saved.id(), saved);
             return saved;
@@ -45,6 +46,15 @@ public class FakeReservationRepository implements ReservationRepository {
                 .anyMatch(reservation -> reservation.time()
                         .id()
                         .equals(reservationTimeId)
+                );
+    }
+
+    @Override
+    public boolean existsByThemeId(Long themeId) {
+        return store.values().stream()
+                .anyMatch(reservation -> reservation.theme()
+                        .id()
+                        .equals(themeId)
                 );
     }
 

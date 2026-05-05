@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import roomescape.domain.theme.FakeThemeRepository;
 import roomescape.global.exception.ReservationTimeException;
 import roomescape.domain.reservation.FakeReservationRepository;
 import roomescape.domain.reservation.FakeReservationTimeRepository;
@@ -18,6 +19,8 @@ import roomescape.reservation.application.dto.ReservationResult;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTime;
 import roomescape.reservation.domain.ReservationTimeRepository;
+import roomescape.theme.domain.Theme;
+import roomescape.theme.domain.ThemeRepository;
 
 class ReservationServiceTest {
 
@@ -25,13 +28,15 @@ class ReservationServiceTest {
 
     private ReservationRepository reservationRepository;
     private ReservationTimeRepository reservationTimeRepository;
+    private ThemeRepository themeRepository;
     private ReservationService reservationService;
 
     @BeforeEach
     void setUp() {
         reservationRepository = new FakeReservationRepository();
         reservationTimeRepository = new FakeReservationTimeRepository();
-        reservationService = new ReservationService(reservationRepository, reservationTimeRepository);
+        themeRepository = new FakeThemeRepository();
+        reservationService = new ReservationService(reservationRepository, reservationTimeRepository, themeRepository);
     }
 
     private ReservationTime createReservationTime() {
@@ -40,16 +45,23 @@ class ReservationServiceTest {
         );
     }
 
-    private ReservationCreateCommand createReservationCommand(ReservationTime time) {
-        return new ReservationCreateCommand(
-                "브라운",
-                TODAY,
-                time.id()
+    private Theme createTheme() {
+        return themeRepository.save(
+                Theme.createWithNullId("공포", "무서움", "/images/theme/1.jpg")
         );
     }
 
-    private ReservationResult saveReservation(String name, LocalDate date, ReservationTime time) {
-        ReservationCreateCommand command = new ReservationCreateCommand(name, date, time.id());
+    private ReservationCreateCommand createReservationCommand(ReservationTime time, Theme theme) {
+        return new ReservationCreateCommand(
+                "브라운",
+                TODAY,
+                time.id(),
+                theme.id()
+        );
+    }
+
+    private ReservationResult saveReservation(String name, LocalDate date, ReservationTime time, Theme theme) {
+        ReservationCreateCommand command = new ReservationCreateCommand(name, date, time.id(), theme.id());
         return reservationService.saveReservation(command);
     }
 
@@ -58,7 +70,9 @@ class ReservationServiceTest {
     void saveReservation() {
         // given
         ReservationTime time = createReservationTime();
-        ReservationCreateCommand command = createReservationCommand(time);
+        Theme theme = createTheme();
+
+        ReservationCreateCommand command = createReservationCommand(time, theme);
 
         // when
         ReservationResult savedReservation = reservationService.saveReservation(command);
@@ -74,7 +88,8 @@ class ReservationServiceTest {
         ReservationCreateCommand command = new ReservationCreateCommand(
                 "브라운",
                 TODAY,
-                999L
+                999L,
+                1L
         );
 
         // when & then
@@ -87,10 +102,12 @@ class ReservationServiceTest {
     void getReservations() {
         // given
         ReservationTime time = createReservationTime();
+        Theme theme = createTheme();
         ReservationResult savedReservation = saveReservation(
                 "브라운",
                 TODAY,
-                time
+                time,
+                theme
         );
 
         // when
@@ -116,10 +133,12 @@ class ReservationServiceTest {
     void deleteReservation() {
         // given
         ReservationTime time = createReservationTime();
+        Theme theme = createTheme();
         ReservationResult savedReservation = saveReservation(
                 "브라운",
                 TODAY,
-                time
+                time,
+                theme
         );
 
         // when
