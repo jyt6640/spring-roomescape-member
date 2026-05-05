@@ -8,12 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import roomescape.theme.application.ThemeService;
 import roomescape.theme.application.dto.ThemeCreateCommand;
 import roomescape.theme.application.dto.ThemeResult;
+import roomescape.theme.application.dto.ThemeSearchCreateCommand;
+import roomescape.theme.application.dto.ThemeSearchResult;
 import roomescape.theme.presentation.dto.ThemeRequest;
 import roomescape.theme.presentation.dto.ThemeResponse;
+import roomescape.theme.presentation.dto.ThemeSearchResponse;
 
 @RestController
 public class ThemeController {
@@ -47,6 +51,23 @@ public class ThemeController {
                 .toList()
         );
     }
+
+    @GetMapping(value = "/themes", params = {"sortBy", "from", "to", "limit"})
+    public ResponseEntity<List<ThemeSearchResponse>> getSearchThemes(
+            @RequestParam("sortBy") String sortBy,
+            @RequestParam("from") String from,
+            @RequestParam("to") String to,
+            @RequestParam("limit") Integer limit
+    ) {
+        List<ThemeSearchResult> response = service.getSearchTheme(
+                ThemeSearchCreateCommand.create(sortBy, from, to, limit)
+        );
+        return ResponseEntity.ok(response.stream()
+                .map(ThemeSearchResponse::createResponse)
+                .toList()
+        );
+    }
+
 
     @DeleteMapping("/themes/{id}")
     public ResponseEntity<Void> deleteTheme(
