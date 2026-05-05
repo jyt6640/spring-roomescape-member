@@ -7,12 +7,14 @@ import roomescape.global.exception.ReservationTimeException;
 public record ReservationRequest(
         String name,
         String date,
-        Long timeId
+        Long timeId,
+        Long themeId
 ) {
     public ReservationRequest{
         validateNameNotEmpty(name);
         validateDateNotEmpty(date);
         validateTimeIdNotEmpty(timeId);
+        validateThemeIdNotEmpty(themeId);
     }
 
     private static void validateNameNotEmpty(String name) {
@@ -29,6 +31,12 @@ public record ReservationRequest(
 
     private static void validateDateNotEmpty(String date) {
         if (date == null) {
+            throw new ReservationException(ErrorCode.RESERVATION_REQUEST_NULL);
+        }
+    }
+
+    private static void validateThemeIdNotEmpty(Long themeId) {
+        if (themeId == null) {
             throw new ReservationException(ErrorCode.RESERVATION_REQUEST_NULL);
         }
     }

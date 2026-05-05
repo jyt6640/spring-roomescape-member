@@ -5,13 +5,15 @@ import java.time.LocalDate;
 public record ReservationCreateCommand(
         String name,
         LocalDate date,
-        Long timeId
+        Long timeId,
+        Long themeId
 ) {
-    public static ReservationCreateCommand create(String name, LocalDate date, Long timeId) {
+    public static ReservationCreateCommand create(String name, LocalDate date, Long timeId, Long themeId) {
         return new ReservationCreateCommand(
                 name,
                 date,
-                timeId
+                timeId,
+                themeId
         );
     }
 }

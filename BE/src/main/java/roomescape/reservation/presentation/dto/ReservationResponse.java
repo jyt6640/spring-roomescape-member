@@ -6,14 +6,16 @@ public record ReservationResponse(
         Long id,
         String name,
         String date,
-        ReservationTimeResponse time
+        Long timeId,
+        Long themeId
 ) {
     public static ReservationResponse createResponse(ReservationResult reservationResult) {
         return new ReservationResponse(
                 reservationResult.id(),
                 reservationResult.name(),
                 reservationResult.date(),
-                ReservationTimeResponse.createResponse(reservationResult.time())
+                reservationResult.time().id(),
+                reservationResult.theme().id()
         );
     }
 }

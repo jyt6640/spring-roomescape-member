@@ -13,4 +13,13 @@ public record Theme(
     public static Theme createWithId(Long id, String name, String description, String thumbnail) {
         return new Theme(id, name, description, thumbnail);
     }
+
+    public static Theme findTheme(Long id) {
+        return new Theme(
+                id,
+                null,
+                null,
+                null
+        );
+    }
 }
