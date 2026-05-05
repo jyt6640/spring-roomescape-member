@@ -1,5 +1,6 @@
 package roomescape.reservation.infrastructure;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTime;
+import roomescape.reservation.infrastructure.entity.AvailableReservationTimeEntity;
 import roomescape.theme.domain.Theme;
 
 @Repository
@@ -136,6 +138,37 @@ public class ReservationJdbcTemplateRepository implements ReservationRepository 
         """;
         Integer result = jdbcTemplate.queryForObject(sql, Integer.class, id);
         return result != null && result == 1;
+    }
+
+    @Override
+    public List<AvailableReservationTimeEntity> findAvailableAllTime(LocalDate date, Long themeId) {
+        String sql = """
+                SELECT
+                    ? AS date,
+                    rt.id AS time_id,
+                    ? AS theme_id,
+                    CASE
+                        WHEN r.id IS NULL THEN true
+                        ELSE false
+                    END AS available
+                FROM reservation_time rt
+                LEFT JOIN reservation r
+                    ON r.time_id = rt.id
+                    AND r.date = ?
+                    AND r.theme_id = ?
+                ORDER BY rt.start_at
+        """;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new AvailableReservationTimeEntity(
+                        rs.getDate("date").toLocalDate(),
+                        rs.getLong("time_id"),
+                        rs.getLong("theme_id"),
+                        rs.getBoolean("available")
+                ),
+                date,
+                themeId,
+                date,
+                themeId
+        );
     }
 
     @Override
