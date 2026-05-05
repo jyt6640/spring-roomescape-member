@@ -1,4 +1,4 @@
-package roomescape.domain.theme.application;
+package roomescape.theme.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,8 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import roomescape.domain.theme.FakeThemeRepository;
-import roomescape.theme.application.ThemeService;
+import roomescape.theme.FakeThemeRepository;
 import roomescape.theme.application.dto.ThemeCreateCommand;
 import roomescape.theme.application.dto.ThemeResult;
 import roomescape.theme.application.dto.ThemeSearchCreateCommand;

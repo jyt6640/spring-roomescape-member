@@ -1,4 +1,4 @@
-package roomescape.domain.reservation.application;
+package roomescape.reservation.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,11 +8,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import roomescape.domain.reservation.FakeReservationRepository;
-import roomescape.domain.reservation.FakeReservationTimeRepository;
-import roomescape.domain.theme.FakeThemeRepository;
-import roomescape.reservation.application.ReservationService;
-import roomescape.reservation.application.ReservationTimeService;
+import roomescape.reservation.FakeReservationRepository;
+import roomescape.reservation.FakeReservationTimeRepository;
+import roomescape.theme.FakeThemeRepository;
 import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeResult;
