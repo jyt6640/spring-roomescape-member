@@ -1,5 +1,6 @@
 package roomescape.theme.infrastructure;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.ThemeRepository;
+import roomescape.theme.domain.ThemeSearch;
 
 @Repository
 public class ThemeJdbcTemplateRepository implements ThemeRepository {
@@ -45,6 +47,29 @@ public class ThemeJdbcTemplateRepository implements ThemeRepository {
                         rs.getString("thumbnail")
                 ));
     }
+
+    @Override
+    public List<ThemeSearch> findPopular(LocalDate from, LocalDate to, int limit) {
+        String sql = """
+        SELECT t.id, t.name
+        FROM theme t
+        JOIN reservation r ON r.theme_id = t.id
+        WHERE r.date BETWEEN ? AND ?
+        GROUP BY t.id, t.name
+        ORDER BY COUNT(r.id) DESC
+        LIMIT ?
+        """;
+        return jdbcTemplate.query(sql,
+                (rs, rowNum) -> ThemeSearch.create(
+                        rs.getLong("id"),
+                        rs.getString("name")
+                ),
+                from,
+                to,
+                limit
+        );
+    }
+
 
     @Override
     public Optional<Theme> findById(Long id) {
