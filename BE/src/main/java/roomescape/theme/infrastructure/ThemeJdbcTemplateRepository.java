@@ -6,9 +6,11 @@ import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.ThemeRepository;
 
+@Repository
 public class ThemeJdbcTemplateRepository implements ThemeRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -30,22 +32,6 @@ public class ThemeJdbcTemplateRepository implements ThemeRepository {
         );
         Long id = simpleJdbcInsert.executeAndReturnKey(params).longValue();
         return Theme.createWithId(id, theme.name(), theme.description(), theme.thumbnail());
-    }
-
-    @Override
-    public Optional<Theme> findById(Long id) {
-        String sql = "SELECT id, name, description, thumbnail FROM theme WHERE id = ?";
-        List<Theme> theme = jdbcTemplate.query(sql,
-                (rs, rowNum) -> Theme.createWithId(
-                    rs.getLong("id"),
-                    rs.getString("name"),
-                    rs.getString("description"),
-                    rs.getString("thumbnail")
-            ),
-            id
-        );
-        return theme.stream()
-                .findFirst();
     }
 
     @Override

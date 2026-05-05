@@ -28,11 +28,6 @@ public class FakeThemeRepository implements ThemeRepository {
     }
 
     @Override
-    public Optional<Theme> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
-    }
-
-    @Override
     public List<Theme> findAll() {
         return store.values().stream().toList();
     }

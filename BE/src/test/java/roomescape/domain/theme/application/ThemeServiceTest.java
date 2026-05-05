@@ -68,7 +68,7 @@ public class ThemeServiceTest {
 
         // when
         themeService.deleteTheme(1L);
-        List<ThemeResult> result = theme.getThemes();
+        List<ThemeResult> result = themeService.getThemes();
 
         // then
         assertThat(result.size()).isEqualTo(0);

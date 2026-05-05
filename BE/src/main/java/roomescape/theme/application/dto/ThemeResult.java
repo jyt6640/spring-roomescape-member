@@ -1,12 +1,19 @@
 package roomescape.theme.application.dto;
 
+import roomescape.theme.domain.Theme;
+
 public record ThemeResult(
         Long id,
         String name,
         String description,
         String thumbnail
 ) {
-    public static ThemeResult create(Long id, String name, String description, String thumbnail) {
-        return new ThemeResult(id, name, description, thumbnail);
+    public static ThemeResult create(Theme theme) {
+        return new ThemeResult(
+                theme.id(),
+                theme.name(),
+                theme.description(),
+                theme.thumbnail()
+        );
     }
 }
