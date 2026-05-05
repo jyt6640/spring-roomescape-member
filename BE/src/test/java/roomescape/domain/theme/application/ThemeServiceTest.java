@@ -10,11 +10,13 @@ import roomescape.domain.theme.FakeThemeRepository;
 import roomescape.theme.application.ThemeService;
 import roomescape.theme.application.dto.ThemeCreateCommand;
 import roomescape.theme.application.dto.ThemeResult;
-import roomescape.theme.domain.ThemeRepository;
+import roomescape.theme.application.dto.ThemeSearchCreateCommand;
+import roomescape.theme.application.dto.ThemeSearchResult;
+import roomescape.theme.domain.ThemeSearch;
 
 public class ThemeServiceTest {
 
-    private ThemeRepository themeRepository;
+    private FakeThemeRepository themeRepository;
     private ThemeService themeService;
 
     @BeforeEach
@@ -72,5 +74,28 @@ public class ThemeServiceTest {
 
         // then
         assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("인기 테마를 10개만 조회한다")
+    void getPopularThemes() {
+        // given
+        for (long id = 1L; id <= 12L; id++) {
+            themeRepository.addThemeSearch(ThemeSearch.create(id, "테마" + id));
+        }
+        ThemeSearchCreateCommand command = ThemeSearchCreateCommand.create(
+                "popular",
+                "2026-05-01",
+                "2026-05-07",
+                10
+        );
+
+        // when
+        List<ThemeSearchResult> result = themeService.getSearchTheme(command);
+
+        // then
+        assertThat(result).hasSize(10);
+        assertThat(result.get(0)).isEqualTo(new ThemeSearchResult(1L, "테마1"));
+        assertThat(result.get(9)).isEqualTo(new ThemeSearchResult(10L, "테마10"));
     }
 }

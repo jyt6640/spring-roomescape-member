@@ -1,15 +1,19 @@
 package roomescape.domain.theme;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.ThemeRepository;
+import roomescape.theme.domain.ThemeSearch;
 
 public class FakeThemeRepository implements ThemeRepository {
 
     private final Map<Long, Theme> store = new HashMap<>();
+    private final List<ThemeSearch> themeSearches = new ArrayList<>();
     private Long sequence = 1L;
 
     @Override
@@ -30,6 +34,17 @@ public class FakeThemeRepository implements ThemeRepository {
     @Override
     public List<Theme> findAll() {
         return store.values().stream().toList();
+    }
+
+    public void addThemeSearch(ThemeSearch themeSearch) {
+        themeSearches.add(themeSearch);
+    }
+
+    @Override
+    public List<ThemeSearch> findPopular(LocalDate from, LocalDate to, int limit) {
+        return themeSearches.stream()
+                .limit(limit)
+                .toList();
     }
 
     @Override
