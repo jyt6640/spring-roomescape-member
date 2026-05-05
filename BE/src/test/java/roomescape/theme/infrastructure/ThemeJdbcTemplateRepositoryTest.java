@@ -148,8 +148,8 @@ class ThemeJdbcTemplateRepositoryTest {
         createReservation("라티", now, timeIds.get(3), horrorTheme.id());
         createReservation("피온", now, timeIds.get(4), horrorTheme.id());
         createReservation("워넬", now, timeIds.get(5), adventureTheme.id());
-        createReservation("카키", now, timeIds.get(6), outsideTheme.id());
-        createReservation("포비", now, timeIds.get(7), outsideTheme.id());
+        createReservation("카키", now.plusDays(1), timeIds.get(6), outsideTheme.id());
+        createReservation("포비", now.plusDays(2), timeIds.get(7), outsideTheme.id());
 
         // when
         List<ThemeSearch> popularThemes = themeRepository.findPopular(
@@ -159,7 +159,7 @@ class ThemeJdbcTemplateRepositoryTest {
         );
 
         // then
-        assertThat(popularThemes).contains(
+        assertThat(popularThemes).containsExactly(
                 ThemeSearch.create(mysteryTheme.id(), "추리"),
                 ThemeSearch.create(horrorTheme.id(), "공포")
         );
