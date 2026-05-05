@@ -8,7 +8,7 @@ import java.util.Optional;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTimeRepository;
-import roomescape.reservation.infrastructure.entity.AvailableReservationTimeEntity;
+import roomescape.reservation.domain.AvailableReservation;
 
 public class FakeReservationRepository implements ReservationRepository {
 
@@ -65,9 +65,9 @@ public class FakeReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public List<AvailableReservationTimeEntity> findAvailableAllTime(LocalDate date, Long themeId) {
+    public List<AvailableReservation> findAvailableAllTime(LocalDate date, Long themeId) {
         return reservationTimeRepository.findAll().stream()
-                .map(time -> new AvailableReservationTimeEntity(
+                .map(time -> new AvailableReservation(
                         date,
                         time.id(),
                         themeId,

@@ -1,7 +1,6 @@
 package roomescape.domain.reservation.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,7 +17,6 @@ import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeResult;
 import roomescape.reservation.domain.ReservationRepository;
-import roomescape.reservation.domain.ReservationTime;
 import roomescape.reservation.domain.ReservationTimeRepository;
 import roomescape.theme.application.ThemeService;
 import roomescape.theme.application.dto.ThemeCreateCommand;
