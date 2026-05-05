@@ -1,12 +1,17 @@
 package roomescape.theme.application;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import roomescape.theme.application.dto.ThemeCreateCommand;
 import roomescape.theme.application.dto.ThemeResult;
+import roomescape.theme.application.dto.ThemeSearchCreateCommand;
+import roomescape.theme.application.dto.ThemeSearchResult;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.ThemeRepository;
+import roomescape.theme.domain.ThemeSortType;
+import roomescape.theme.domain.ThemeSearch;
 
 @Service
 public class ThemeService {
@@ -35,7 +40,26 @@ public class ThemeService {
                 .toList();
     }
 
+    public List<ThemeSearchResult> getSearchTheme(ThemeSearchCreateCommand request) {
+        ThemeSortType sortType = ThemeSortType.from(request.sortBy());
+        if (sortType == ThemeSortType.POPULAR) {
+            return getPopularThemes(request);
+        }
+        return List.of();
+    }
+
     public void deleteTheme(Long id) {
         themeRepository.deleteById(id);
+    }
+
+    private List<ThemeSearchResult> getPopularThemes(ThemeSearchCreateCommand request) {
+        List<ThemeSearch> popularThemes = themeRepository.findPopular(
+                LocalDate.parse(request.from()),
+                LocalDate.parse(request.to()),
+                request.limit()
+        );
+        return popularThemes.stream()
+                .map(ThemeSearchResult::create)
+                .toList();
     }
 }
