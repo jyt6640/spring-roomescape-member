@@ -1,6 +1,5 @@
-package roomescape.reservations.presentation.dto;
+package roomescape.reservation.presentation.dto;
 
-import java.time.LocalDate;
 import roomescape.global.exception.ErrorCode;
 import roomescape.global.exception.customException.ReservationException;
 import roomescape.global.exception.customException.ReservationTimeException;

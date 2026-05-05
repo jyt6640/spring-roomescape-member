@@ -1,4 +1,4 @@
-package roomescape.reservations.presentation;
+package roomescape.reservation.presentation;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import roomescape.reservations.application.ReservationService;
-import roomescape.reservations.application.dto.ReservationCreateCommand;
-import roomescape.reservations.application.dto.ReservationResult;
-import roomescape.reservations.presentation.dto.ReservationRequest;
-import roomescape.reservations.presentation.dto.ReservationResponse;
+import roomescape.reservation.application.ReservationService;
+import roomescape.reservation.application.dto.ReservationCreateCommand;
+import roomescape.reservation.application.dto.ReservationResult;
+import roomescape.reservation.presentation.dto.ReservationRequest;
+import roomescape.reservation.presentation.dto.ReservationResponse;
 
 @RestController
 public class ReservationController {

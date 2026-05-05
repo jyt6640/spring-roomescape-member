@@ -1,11 +1,11 @@
-package roomescape.domain.reservations;
+package roomescape.domain.reservation;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import roomescape.reservations.domain.Reservation;
-import roomescape.reservations.domain.ReservationRepository;
+import roomescape.reservation.domain.Reservation;
+import roomescape.reservation.domain.ReservationRepository;
 
 public class FakeReservationRepository implements ReservationRepository {
 

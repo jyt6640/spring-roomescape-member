@@ -1,4 +1,4 @@
-package roomescape.reservations.infrastructure;
+package roomescape.reservation.infrastructure;
 
 import java.util.List;
 import java.util.Map;
@@ -7,8 +7,8 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import roomescape.reservations.domain.ReservationTime;
-import roomescape.reservations.domain.ReservationTimeRepository;
+import roomescape.reservation.domain.ReservationTime;
+import roomescape.reservation.domain.ReservationTimeRepository;
 
 @Repository
 public class ReservationTimeJdbcTemplateRepository implements ReservationTimeRepository {
