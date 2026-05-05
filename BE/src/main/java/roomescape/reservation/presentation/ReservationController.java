@@ -33,7 +33,8 @@ public class ReservationController {
                 new ReservationCreateCommand(
                         request.name(),
                         LocalDate.parse(request.date()),
-                        request.timeId()
+                        request.timeId(),
+                        request.themeId()
                 )
         );
         return ResponseEntity.created(URI.create("/reservations/" + response.id()))

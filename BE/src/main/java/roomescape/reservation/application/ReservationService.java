@@ -12,6 +12,8 @@ import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationTime;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTimeRepository;
+import roomescape.theme.domain.Theme;
+import roomescape.theme.domain.ThemeRepository;
 
 
 @Service
@@ -19,23 +21,29 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final ReservationTimeRepository reservationTimeRepository;
+    private final ThemeRepository themeRepository;
 
     public ReservationService(
             ReservationRepository reservationRepository,
-            ReservationTimeRepository reservationTimeRepository
+            ReservationTimeRepository reservationTimeRepository,
+            ThemeRepository themeRepository
     ) {
         this.reservationRepository = reservationRepository;
         this.reservationTimeRepository = reservationTimeRepository;
+        this.themeRepository = themeRepository;
     }
 
     @Transactional
     public ReservationResult saveReservation(ReservationCreateCommand reservationCreate) {
         ReservationTime time = reservationTimeRepository.findById(reservationCreate.timeId())
                 .orElseThrow(() -> new ReservationTimeException(ErrorCode.RESERVATION_TIME_NOT_FOUND));
+        Theme theme = themeRepository.findById(reservationCreate.themeId())
+                .orElseThrow(() -> new ReservationException(ErrorCode.THEME_NOT_FOUND));
         Reservation reservation = Reservation.createWithNullId(
                 reservationCreate.name(),
                 reservationCreate.date(),
-                time
+                time,
+                theme
         );
         Reservation savedReservation = reservationRepository.save(reservation);
         return ReservationResult.create(savedReservation);

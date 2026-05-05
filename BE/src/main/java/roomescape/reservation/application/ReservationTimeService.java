@@ -30,13 +30,13 @@ public class ReservationTimeService {
                 request.startAt()
         );
         ReservationTime savedReservationTime = reservationTimeRepository.save(reservationTime);
-        return ReservationTimeResult.createWithId(savedReservationTime);
+        return ReservationTimeResult.create(savedReservationTime);
     }
 
     public List<ReservationTimeResult> getTimes() {
         List<ReservationTime> times = reservationTimeRepository.findAll();
         return times.stream()
-                .map(ReservationTimeResult::createWithId)
+                .map(ReservationTimeResult::create)
                 .toList();
     }
 

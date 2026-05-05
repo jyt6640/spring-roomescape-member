@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTime;
+import roomescape.theme.domain.Theme;
 
 @Repository
 public class ReservationJdbcTemplateRepository implements ReservationRepository {
@@ -29,24 +30,28 @@ public class ReservationJdbcTemplateRepository implements ReservationRepository 
         Map<String, Object> params = Map.of(
                 "name", reservation.name(),
                 "date", reservation.date(),
-                "time_id", reservation.time().id()
+                "time_id", reservation.time().id(),
+                "theme_id", reservation.theme().id()
         );
         Long id = simpleJdbcInsert.executeAndReturnKey(params).longValue();
         return Reservation.createWithId(
                 id,
                 reservation.name(),
                 reservation.date(),
-                reservation.time()
+                reservation.time(),
+                reservation.theme()
         );
     }
 
     @Override
     public Optional<Reservation> findById(Long id) {
         String sql = """
-        SELECT r.id, r.name, r.date,
-               rt.id AS time_id, rt.start_at
+        SELECT r.id, r.name AS reservation_name, r.date,
+               rt.id AS time_id, rt.start_at,
+               t.id AS theme_id, t.name AS theme_name
         FROM reservation r
         JOIN reservation_time rt ON r.time_id = rt.id
+        JOIN theme t ON r.theme_id = t.id
         WHERE r.id = ?
         """;
         List<Reservation> reservation = jdbcTemplate.query(
@@ -57,11 +62,16 @@ public class ReservationJdbcTemplateRepository implements ReservationRepository 
                             rs.getTime("start_at").toLocalTime()
                     );
 
+                    Theme theme = Theme.findTheme(
+                            rs.getLong("theme_id")
+                    );
+
                     return Reservation.createWithId(
                             rs.getLong("id"),
-                            rs.getString("name"),
+                            rs.getString("reservation_name"),
                             rs.getDate("date").toLocalDate(),
-                            time
+                            time,
+                            theme
                     );
                 },
                 id
@@ -74,10 +84,12 @@ public class ReservationJdbcTemplateRepository implements ReservationRepository 
     @Override
     public List<Reservation> findAll() {
         String sql = """
-        SELECT r.id, r.name, r.date,
-               rt.id as time_id, rt.start_at
+        SELECT r.id, r.name AS reservation_name, r.date,
+               rt.id AS time_id, rt.start_at,
+               t.id AS theme_id, t.name AS theme_name
         FROM reservation r
         JOIN reservation_time rt ON r.time_id = rt.id
+        JOIN theme t ON r.theme_id = t.id
         """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -86,11 +98,16 @@ public class ReservationJdbcTemplateRepository implements ReservationRepository 
                     rs.getTime("start_at").toLocalTime()
             );
 
+            Theme theme = Theme.findTheme(
+                    rs.getLong("theme_id")
+            );
+
             return Reservation.createWithId(
                     rs.getLong("id"),
-                    rs.getString("name"),
+                    rs.getString("reservation_name"),
                     rs.getDate("date").toLocalDate(),
-                    time
+                    time,
+                    theme
             );
         });
     }
@@ -102,6 +119,19 @@ public class ReservationJdbcTemplateRepository implements ReservationRepository 
                 SELECT 1
                 FROM reservation
                 WHERE time_id = ?
+            );
+        """;
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return result != null && result == 1;
+    }
+
+    @Override
+    public boolean existsByThemeId(Long id) {
+        String sql = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM reservation
+                WHERE theme_id = ?
             );
         """;
         Integer result = jdbcTemplate.queryForObject(sql, Integer.class, id);
