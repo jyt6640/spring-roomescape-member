@@ -131,7 +131,7 @@ class ThemeJdbcTemplateRepositoryTest {
     }
 
     @Test
-    @DisplayName("예약 수가 많은 순서로 인기 테마를 제한 개수만큼 조회한다")
+    @DisplayName("인기 테마를 제한 개수만큼 조회한다")
     void findPopular() {
         // given
         Theme mysteryTheme = themeRepository.save(Theme.createWithNullId("추리", "어려움", "/images/theme/1.jpg"));
