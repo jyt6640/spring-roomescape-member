@@ -18,6 +18,7 @@ import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeResult;
 import roomescape.reservation.domain.ReservationRepository;
+import roomescape.reservation.domain.ReservationTime;
 import roomescape.reservation.domain.ReservationTimeRepository;
 import roomescape.theme.application.ThemeService;
 import roomescape.theme.application.dto.ThemeCreateCommand;
@@ -35,10 +36,11 @@ class ReservationTimeServiceTest {
     private ThemeRepository themeRepository;
     private ThemeService themeService;
 
+
     @BeforeEach
     void setUp() {
-        reservationRepository = new FakeReservationRepository();
         reservationTimeRepository = new FakeReservationTimeRepository();
+        reservationRepository = new FakeReservationRepository(reservationTimeRepository);
         themeRepository = new FakeThemeRepository();
         themeService = new ThemeService(themeRepository);
         reservationService = new ReservationService(reservationRepository, reservationTimeRepository, themeRepository);

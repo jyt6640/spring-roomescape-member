@@ -10,7 +10,7 @@ import roomescape.reservation.domain.ReservationTimeRepository;
 public class FakeReservationTimeRepository implements ReservationTimeRepository {
 
     private final Map<Long, ReservationTime> store = new HashMap<>();
-    private Long sequence = 0L;
+    private Long sequence = 1L;
 
     @Override
     public ReservationTime save(ReservationTime reservationTime) {

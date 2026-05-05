@@ -14,6 +14,8 @@ import roomescape.global.exception.ReservationTimeException;
 import roomescape.domain.reservation.FakeReservationRepository;
 import roomescape.domain.reservation.FakeReservationTimeRepository;
 import roomescape.reservation.application.ReservationService;
+import roomescape.reservation.application.dto.ReservationAvailableCreateCommand;
+import roomescape.reservation.application.dto.ReservationAvailableResult;
 import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationResult;
 import roomescape.reservation.domain.ReservationRepository;
@@ -33,8 +35,8 @@ class ReservationServiceTest {
 
     @BeforeEach
     void setUp() {
-        reservationRepository = new FakeReservationRepository();
         reservationTimeRepository = new FakeReservationTimeRepository();
+        reservationRepository = new FakeReservationRepository(reservationTimeRepository);
         themeRepository = new FakeThemeRepository();
         reservationService = new ReservationService(reservationRepository, reservationTimeRepository, themeRepository);
     }
@@ -161,6 +163,7 @@ class ReservationServiceTest {
         for (int i = 10; i < 15; i++) {
             createReservationTime(LocalTime.of(i, 0));
         }
+        createTheme();
         reservationService.saveReservation(
                 new ReservationCreateCommand(
                         "홍길동",
@@ -171,13 +174,16 @@ class ReservationServiceTest {
         );
 
         // when
-        List<ReservationResult> result =
+        List<ReservationAvailableResult> result =
                 reservationService.getAvailableTime(
-                        LocalDate.now(),
-                        1L
+                        ReservationAvailableCreateCommand.create(
+                            LocalDate.now().toString(),
+                            1L
+                        )
                 );
 
         // then
         assertThat(result).hasSize(5);
+        assertThat(result.get(1).available()).isFalse();
     }
 }

@@ -1,16 +1,24 @@
 package roomescape.domain.reservation;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationRepository;
+import roomescape.reservation.domain.ReservationTimeRepository;
+import roomescape.reservation.infrastructure.entity.AvailableReservationTimeEntity;
 
 public class FakeReservationRepository implements ReservationRepository {
 
     private final Map<Long, Reservation> store = new HashMap<>();
+    private final ReservationTimeRepository reservationTimeRepository;
     private Long sequence = 0L;
+
+    public FakeReservationRepository(ReservationTimeRepository reservationTimeRepository) {
+        this.reservationTimeRepository = reservationTimeRepository;
+    }
 
     @Override
     public Reservation save(Reservation reservation) {
@@ -45,8 +53,7 @@ public class FakeReservationRepository implements ReservationRepository {
         return store.values().stream()
                 .anyMatch(reservation -> reservation.time()
                         .id()
-                        .equals(reservationTimeId)
-                );
+                        .equals(reservationTimeId));
     }
 
     @Override
@@ -54,7 +61,27 @@ public class FakeReservationRepository implements ReservationRepository {
         return store.values().stream()
                 .anyMatch(reservation -> reservation.theme()
                         .id()
-                        .equals(themeId)
+                        .equals(themeId));
+    }
+
+    @Override
+    public List<AvailableReservationTimeEntity> findAvailableAllTime(LocalDate date, Long themeId) {
+        return reservationTimeRepository.findAll().stream()
+                .map(time -> new AvailableReservationTimeEntity(
+                        date,
+                        time.id(),
+                        themeId,
+                        isAvailable(date, themeId, time.id())
+                ))
+                .toList();
+    }
+
+    private boolean isAvailable(LocalDate date, Long themeId, Long timeId) {
+        return store.values().stream()
+                .noneMatch(reservation ->
+                        reservation.date().equals(date)
+                                && reservation.theme().id().equals(themeId)
+                                && reservation.time().id().equals(timeId)
                 );
     }
 
