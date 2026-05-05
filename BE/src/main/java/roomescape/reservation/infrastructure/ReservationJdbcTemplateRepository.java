@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTime;
-import roomescape.reservation.infrastructure.entity.AvailableReservationTimeEntity;
+import roomescape.reservation.domain.AvailableReservation;
 import roomescape.theme.domain.Theme;
 
 @Repository
@@ -141,7 +141,7 @@ public class ReservationJdbcTemplateRepository implements ReservationRepository 
     }
 
     @Override
-    public List<AvailableReservationTimeEntity> findAvailableAllTime(LocalDate date, Long themeId) {
+    public List<AvailableReservation> findAvailableAllTime(LocalDate date, Long themeId) {
         String sql = """
                 SELECT
                     ? AS date,
@@ -158,7 +158,7 @@ public class ReservationJdbcTemplateRepository implements ReservationRepository 
                     AND r.theme_id = ?
                 ORDER BY rt.start_at
         """;
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new AvailableReservationTimeEntity(
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new AvailableReservation(
                         rs.getDate("date").toLocalDate(),
                         rs.getLong("time_id"),
                         rs.getLong("theme_id"),

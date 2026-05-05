@@ -1,7 +1,6 @@
 package roomescape.reservation.application.dto;
 
-import java.time.LocalDate;
-import roomescape.reservation.infrastructure.entity.AvailableReservationTimeEntity;
+import roomescape.reservation.domain.AvailableReservation;
 
 public record ReservationAvailableResult(
         String date,
@@ -9,12 +8,12 @@ public record ReservationAvailableResult(
         Long themeId,
         boolean available
 ) {
-    public static ReservationAvailableResult create(AvailableReservationTimeEntity availableReservationTimeEntity) {
+    public static ReservationAvailableResult create(AvailableReservation availableReservation) {
         return new ReservationAvailableResult(
-                availableReservationTimeEntity.date().toString(),
-                availableReservationTimeEntity.timeId(),
-                availableReservationTimeEntity.themeId(),
-                availableReservationTimeEntity.available()
+                availableReservation.date().toString(),
+                availableReservation.timeId(),
+                availableReservation.themeId(),
+                availableReservation.available()
         );
     }
 }

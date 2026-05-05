@@ -1,8 +1,8 @@
-package roomescape.reservation.infrastructure.entity;
+package roomescape.reservation.domain;
 
 import java.time.LocalDate;
 
-public record AvailableReservationTimeEntity(
+public record AvailableReservation(
         LocalDate date,
         Long timeId,
         Long themeId,

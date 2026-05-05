@@ -15,7 +15,7 @@ import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationTime;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTimeRepository;
-import roomescape.reservation.infrastructure.entity.AvailableReservationTimeEntity;
+import roomescape.reservation.domain.AvailableReservation;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.ThemeRepository;
 
@@ -61,7 +61,7 @@ public class ReservationService {
     }
 
     public List<ReservationAvailableResult> getAvailableTime(ReservationAvailableCreateCommand request) {
-        List<AvailableReservationTimeEntity> availableTimes = reservationRepository.findAvailableAllTime(
+        List<AvailableReservation> availableTimes = reservationRepository.findAvailableAllTime(
                 LocalDate.parse(request.date()),
                 request.themeId()
         );
