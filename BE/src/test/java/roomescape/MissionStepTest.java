@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import roomescape.reservation.presentation.ReservationController;
+import roomescape.theme.presentation.ThemeController;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -109,5 +110,34 @@ public class MissionStepTest {
         }
 
         assertThat(isJdbcTemplateInjected).isFalse();
+    }
+
+    @Autowired
+    private ThemeController themeController;
+
+    @Test
+    void 테마_추가_API() {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", "공포");
+        params.put("description", "무서움");
+        params.put("thumbnail", "/images/theme/1.jpg");
+
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(params)
+                .when().post("/themes")
+                .then().log().all()
+                .statusCode(201);
+
+        RestAssured.given().log().all()
+                .when().get("/themes")
+                .then().log().all()
+                .statusCode(200)
+                .body("size()", is(1));
+
+        RestAssured.given().log().all()
+                .when().delete("/themes/1")
+                .then().log().all()
+                .statusCode(204);
     }
 }
