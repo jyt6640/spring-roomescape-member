@@ -47,6 +47,22 @@ public class ThemeJdbcTemplateRepository implements ThemeRepository {
     }
 
     @Override
+    public Optional<Theme> findById(Long id) {
+        String sql = "SELECT id, name, description, thumbnail FROM theme WHERE id = ?";
+        List<Theme> themes = jdbcTemplate.query(sql,
+                (rs, rowNum) -> Theme.createWithId(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("thumbnail")
+                ),
+                id
+        );
+        return themes.stream()
+                .findFirst();
+    }
+
+    @Override
     public void deleteById(Long id) {
         jdbcTemplate.update("DELETE FROM theme WHERE id = ?", id);
     }
