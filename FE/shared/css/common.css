@@ -1,5 +1,4 @@
 :root {
-  /* Colors */
   --color-pure-black: #000000;
   --color-light-gray: #f5f5f7;
   --color-near-black: #1d1d1f;
@@ -7,29 +6,25 @@
   --color-link-blue: #0066cc;
   --color-bright-blue: #2997ff;
   --color-white: #ffffff;
-  --color-secondary-text: rgba(0, 0, 0, 0.8);
-  --color-tertiary-text: rgba(0, 0, 0, 0.48);
-  
-  /* Dark Surface Variants */
-  --color-dark-surface-1: #272729;
-  --color-dark-surface-2: #262628;
-  
-  /* Typography */
-  --font-display: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  --font-text: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  
-  /* Spacing */
+  --color-secondary-text: rgba(0, 0, 0, 0.6);
+  --color-tertiary-text: rgba(0, 0, 0, 0.4);
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-success: #34c759;
+  --color-danger: #ff3b30;
+
+  --font-display: "SF Pro Display", "Apple SD Gothic Neo", "Noto Sans KR", "Helvetica Neue", sans-serif;
+  --font-text: "SF Pro Text", "Apple SD Gothic Neo", "Noto Sans KR", "Helvetica Neue", sans-serif;
+
   --spacing-base: 8px;
-  
-  /* Radius */
-  --radius-small: 5px;
-  --radius-standard: 8px;
-  --radius-comfortable: 11px;
-  --radius-large: 12px;
+  --radius-small: 6px;
+  --radius-standard: 10px;
+  --radius-comfortable: 14px;
+  --radius-large: 18px;
   --radius-pill: 980px;
-  
-  /* Shadows */
-  --shadow-card: rgba(0, 0, 0, 0.22) 3px 5px 30px 0px;
+
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.18);
+  --shadow-overlay: 0 -8px 48px rgba(0, 0, 0, 0.16);
 }
 
 * {
@@ -43,15 +38,16 @@
 body {
   font-family: var(--font-text);
   font-size: 17px;
-  line-height: 1.47;
-  letter-spacing: -0.374px;
+  line-height: 1.5;
+  letter-spacing: -0.3px;
   color: var(--color-near-black);
   background-color: var(--color-white);
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 a {
@@ -73,20 +69,22 @@ button {
 .container {
   max-width: 980px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
-/* Apple Navigation */
+/* 네비게이션 */
 .nav-bar {
   position: sticky;
   top: 0;
   z-index: 9999;
-  height: 48px;
-  background: rgba(0, 0, 0, 0.8);
+  height: 52px;
+  background: rgba(10, 10, 10, 0.85);
   backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .nav-content {
@@ -95,27 +93,28 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 .nav-links {
   display: flex;
-  gap: 30px;
+  gap: 28px;
 }
 
 .nav-links a {
-  color: #f5f5f7;
-  font-size: 12px;
+  color: rgba(245, 245, 247, 0.8);
+  font-size: 13px;
   font-weight: 400;
-  opacity: 0.8;
   text-decoration: none;
+  transition: color 0.2s;
 }
 
 .nav-links a:hover {
-  opacity: 1;
+  color: #f5f5f7;
+  text-decoration: none;
 }
 
-/* Section Rhythm */
+/* 섹션 */
 section {
   padding: 100px 0;
 }
@@ -130,32 +129,39 @@ section.light {
   color: var(--color-near-black);
 }
 
-/* Pill Button */
+section.white {
+  background-color: var(--color-white);
+  color: var(--color-near-black);
+}
+
+/* 버튼 */
 .btn-primary {
   background-color: var(--color-apple-blue);
   color: var(--color-white);
-  padding: 8px 15px;
+  padding: 10px 20px;
   border-radius: var(--radius-standard);
-  font-size: 17px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: #0077ed;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-pill {
   border-radius: var(--radius-pill);
-  padding: 8px 20px;
-  font-size: 14px;
+  padding: 10px 24px;
+  font-size: 15px;
 }
 
-.btn-outline {
-  background: transparent;
-  border: 1px solid var(--color-apple-blue);
-  color: var(--color-apple-blue);
-}
-
-.btn-outline.dark {
-  border-color: var(--color-white);
-  color: var(--color-white);
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none !important;
 }

@@ -1,7 +1,3 @@
-/**
- * API implementation using real network requests
- */
-
 const BASE_URL = window.API_BASE_URL || '';
 
 const handleResponse = async (response) => {
@@ -11,7 +7,6 @@ const handleResponse = async (response) => {
       const error = await response.json().catch(() => ({ message: 'An error occurred' }));
       throw new Error(error.message || 'Network response was not ok');
     }
-
     const message = await response.text().catch(() => '');
     throw new Error(message || 'Network response was not ok');
   }
@@ -26,22 +21,16 @@ export const api = {
     return handleResponse(response);
   },
 
-  async getReservableTimes(date) {
-    const [times, reservations] = await Promise.all([
-      this.getTimes(),
-      this.getReservations()
+  async getReservableTimes(date, themeId) {
+    const [available, times] = await Promise.all([
+      fetch(`${BASE_URL}/reservations?date=${date}&themeId=${themeId}`).then(handleResponse),
+      this.getTimes()
     ]);
-
-    const reservedTimeIds = new Set(
-      reservations
-        .filter(reservation => reservation.date === date)
-        .map(reservation => String(reservation.time.id))
-    );
-
-    return times.map(time => ({
-      timeId: time.id,
-      startAt: time.startAt,
-      available: !reservedTimeIds.has(String(time.id))
+    const timeMap = new Map(times.map(t => [t.id, t.startAt]));
+    return available.map(slot => ({
+      timeId: slot.timeId,
+      startAt: timeMap.get(slot.timeId) || '',
+      available: slot.available
     }));
   },
 
@@ -52,8 +41,16 @@ export const api = {
       body: JSON.stringify({
         name: data.name,
         date: data.date,
-        timeId: Number(data.timeId)
+        timeId: Number(data.timeId),
+        themeId: Number(data.themeId)
       })
+    });
+    return handleResponse(response);
+  },
+
+  async deleteReservation(id) {
+    const response = await fetch(`${BASE_URL}/reservations/${id}`, {
+      method: 'DELETE'
     });
     return handleResponse(response);
   },
@@ -83,6 +80,20 @@ export const api = {
   // Themes
   async getThemes() {
     const response = await fetch(`${BASE_URL}/themes`);
+    return handleResponse(response);
+  },
+
+  async getPopularThemes() {
+    const fmtLocal = d =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const today = new Date();
+    const to = new Date(today);
+    to.setDate(to.getDate() - 1);
+    const from = new Date(today);
+    from.setDate(from.getDate() - 7);
+    const response = await fetch(
+      `${BASE_URL}/themes?sortBy=popular&from=${fmtLocal(from)}&to=${fmtLocal(to)}&limit=10`
+    );
     return handleResponse(response);
   },
 

@@ -1,51 +1,70 @@
+/* ── 히어로 ── */
 .display-hero {
-  font-size: 56px;
-  line-height: 1.07;
-  letter-spacing: -0.28px;
+  font-size: 52px;
+  line-height: 1.06;
+  letter-spacing: -0.8px;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .subtitle {
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 400;
-  color: var(--color-tertiary-text);
+  color: var(--color-secondary-text);
   text-align: center;
-  margin-bottom: 40px;
 }
 
+/* ── 그리드 ── */
 .admin-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 28px;
 }
 
+/* ── 카드 ── */
 .admin-card {
   background: white;
-  padding: 30px;
-  border-radius: var(--radius-large);
+  padding: 28px;
+  border-radius: 18px;
   box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
 }
 
 .card-title {
-  font-size: 28px;
+  font-size: 22px;
+  font-weight: 700;
   margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+  letter-spacing: -0.4px;
 }
 
+/* ── 목록 ── */
 .item-list {
-  margin-bottom: 30px;
-  border-bottom: 1px solid var(--color-light-gray);
-  padding-bottom: 20px;
-  max-height: 400px;
+  margin-bottom: 28px;
+  max-height: 320px;
   overflow-y: auto;
+}
+
+.item-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.item-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.item-list::-webkit-scrollbar-thumb {
+  background: #d2d2d7;
+  border-radius: 4px;
 }
 
 .item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-light-gray);
 }
 
 .item:last-child {
@@ -55,54 +74,117 @@
 .item-info {
   display: flex;
   flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
 }
 
 .item-name {
   font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-meta {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--color-tertiary-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.empty-msg {
+  color: var(--color-tertiary-text);
+  font-size: 14px;
+  padding: 16px 0;
+  text-align: center;
+}
+
+.error-msg {
+  color: var(--color-danger) !important;
+}
+
+/* ── 삭제 버튼 ── */
 .btn-delete {
   background: transparent;
-  color: #ff3b30;
-  font-size: 14px;
+  color: var(--color-danger);
+  font-size: 13px;
   font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  margin-left: 12px;
+  flex-shrink: 0;
+  transition: background 0.15s;
 }
 
 .btn-delete:hover {
-  text-decoration: underline;
+  background: rgba(255, 59, 48, 0.08);
 }
 
+/* ── 추가 폼 ── */
 .add-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
+  padding-top: 4px;
 }
 
 .add-form h3 {
-  font-size: 21px;
-  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-secondary-text);
+  margin-bottom: 4px;
 }
 
 input, textarea {
-  padding: 12px;
-  border-radius: var(--radius-standard);
-  border: 1px solid #d2d2d7;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #d2d2d7;
   font-family: var(--font-text);
-  font-size: 16px;
+  font-size: 15px;
+  color: var(--color-near-black);
+  transition: all 0.2s;
+  background: var(--color-light-gray);
+}
+
+input[type="time"] {
+  padding: 11px 14px;
 }
 
 input:focus, textarea:focus {
-  outline: 2px solid var(--color-apple-blue);
-  border-color: transparent;
+  outline: none;
+  border-color: var(--color-apple-blue);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
 }
 
-@media (max-width: 834px) {
+textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.add-form .btn-primary {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  margin-top: 4px;
+}
+
+/* ── 예약 카드 (풀 너비) ── */
+.full-card {
+  margin-top: 28px;
+}
+
+@media (max-width: 768px) {
   .admin-grid {
     grid-template-columns: 1fr;
+  }
+
+  .display-hero {
+    font-size: 36px;
   }
 }

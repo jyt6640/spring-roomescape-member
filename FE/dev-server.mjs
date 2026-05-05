@@ -63,7 +63,7 @@ const serveStatic = async (request, response) => {
 
 createServer(async (request, response) => {
   try {
-    if (request.url?.startsWith('/times') || request.url?.startsWith('/reservations')) {
+    if (request.url?.startsWith('/times') || request.url?.startsWith('/reservations') || request.url?.startsWith('/themes')) {
       await proxy(request, response);
       return;
     }

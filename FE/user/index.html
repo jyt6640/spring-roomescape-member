@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Room Escape - Reservation</title>
+  <title>방탈출 예약</title>
   <link rel="stylesheet" href="../shared/css/common.css">
   <link rel="stylesheet" href="../shared/css/user.css">
 </head>
@@ -11,90 +11,97 @@
   <nav class="nav-bar">
     <div class="nav-content">
       <div class="logo">
-        <a href="index.html" style="font-weight: 600; color: white;">ROOM ESCAPE</a>
+        <a href="index.html" style="font-weight: 600; color: white;">방탈출</a>
       </div>
       <div class="nav-links">
-        <a href="index.html" style="opacity: 1;">Explore</a>
-        <a href="../admin/index.html">Admin</a>
+        <a href="index.html" style="opacity: 1;">테마 탐색</a>
+        <a href="../admin/index.html">관리자</a>
       </div>
     </div>
   </nav>
 
   <main>
-    <!-- Hero Section -->
+    <!-- 히어로 섹션 -->
     <section class="dark hero-section">
       <div class="container">
-        <h1 class="display-hero">Escape the Ordinary.</h1>
-        <p class="subtitle white">The most immersive experiences in the city.</p>
+        <h1 class="display-hero">일상을 탈출하라.</h1>
+        <p class="subtitle white">짜릿한 방탈출 경험이 당신을 기다립니다.</p>
         <div class="hero-ctas">
-          <a href="#themes" class="btn-primary btn-pill">Browse All Themes</a>
+          <a href="#themes" class="btn-primary btn-pill">테마 둘러보기</a>
         </div>
       </div>
     </section>
 
-    <!-- Theme Grid -->
+    <!-- 테마 그리드 -->
     <section id="themes" class="light">
       <div class="container">
-        <h2 class="section-title">Choose Your Story</h2>
-        <div id="theme-grid" class="theme-grid">
-          <!-- Themes loaded here -->
-        </div>
+        <h2 class="section-title">테마 선택</h2>
+        <div id="theme-grid" class="theme-grid"></div>
       </div>
     </section>
 
-    <!-- Unified Booking Overlay -->
+    <!-- 인기 테마 -->
+    <section class="white">
+      <div class="container">
+        <h2 class="section-title" style="color: var(--color-near-black);">이번 주 인기 테마</h2>
+        <p style="text-align:center; color:#8e8e93; margin-top:-40px; margin-bottom:40px; font-size:15px;">
+          최근 7일간 예약이 가장 많았던 테마 TOP 10
+        </p>
+        <div id="popular-list" class="popular-list"></div>
+      </div>
+    </section>
+
+    <!-- 예약 오버레이 -->
     <div id="booking-overlay" class="booking-overlay" style="display: none;">
       <div class="overlay-backdrop"></div>
       <div class="overlay-content">
         <button id="close-overlay" class="close-btn">&times;</button>
-        
+
         <div class="booking-steps">
-          <div class="step active" data-step="1">1. Time</div>
-          <div class="step" data-step="2">2. Information</div>
-          <div class="step" data-step="3">3. Confirm</div>
+          <div class="step active" data-step="1">1. 날짜·시간</div>
+          <div class="step" data-step="2">2. 예약자 정보</div>
+          <div class="step" data-step="3">3. 예약 완료</div>
         </div>
 
-        <!-- Step 1: Date & Time -->
+        <!-- 1단계: 날짜 & 시간 -->
         <div id="step-1-content" class="step-pane active">
           <div class="theme-mini-info">
-            <h2 id="selected-theme-name">Theme Name</h2>
-            <p id="selected-theme-desc">Theme Description</p>
+            <h2 id="selected-theme-name"></h2>
+            <p id="selected-theme-desc"></p>
           </div>
           <div class="form-group">
-            <label>Pick a Date</label>
-            <input type="date" id="reservation-date" min="2026-05-04">
+            <label>날짜 선택</label>
+            <input type="date" id="reservation-date">
           </div>
           <div class="form-group">
-            <label>Select an Available Time</label>
-            <div id="time-slots" class="time-slots">
-              <!-- Time slots here -->
-            </div>
+            <label>예약 가능한 시간</label>
+            <div id="time-slots" class="time-slots"></div>
           </div>
-          <button id="next-to-step-2" class="btn-primary btn-pill full-width" disabled>Continue</button>
+          <button id="next-to-step-2" class="btn-primary btn-pill full-width" disabled>다음으로</button>
         </div>
 
-        <!-- Step 2: User Info -->
+        <!-- 2단계: 예약자 정보 -->
         <div id="step-2-content" class="step-pane">
-          <h2>Your Details</h2>
-          <p class="pane-subtitle">Almost there. Tell us who is coming.</p>
+          <h2>예약자 정보</h2>
+          <p class="pane-subtitle">예약자 이름을 입력해 주세요.</p>
           <div class="form-group">
-            <label for="reservation-name">Reservation Name</label>
-            <input type="text" id="reservation-name" placeholder="Full Name">
+            <label for="reservation-name">예약자 이름</label>
+            <input type="text" id="reservation-name" placeholder="이름 입력">
           </div>
           <div class="step-actions">
-            <button id="back-to-step-1" class="btn-link">< Back</button>
-            <button id="reserve-btn" class="btn-primary btn-pill">Reserve Now</button>
+            <button id="back-to-step-1" class="btn-link">&#60; 이전</button>
+            <button id="reserve-btn" class="btn-primary btn-pill">예약하기</button>
           </div>
         </div>
 
-        <!-- Step 3: Success -->
+        <!-- 3단계: 완료 -->
         <div id="step-3-content" class="step-pane">
           <div class="success-animation">
-            <div class="check-icon">✓</div>
+            <div class="check-icon">&#10003;</div>
           </div>
-          <h2>Confirmed!</h2>
+          <h2>예약 완료!</h2>
           <div id="reservation-summary" class="summary-box"></div>
-          <button id="finish-btn" class="btn-primary btn-pill full-width">Done</button>
+          <button id="finish-btn" class="btn-primary btn-pill full-width">닫기</button>
         </div>
       </div>
     </div>
