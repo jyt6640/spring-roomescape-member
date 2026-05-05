@@ -8,5 +8,6 @@ public interface ReservationRepository {
     Optional<Reservation> findById(Long id);
     List<Reservation> findAll();
     boolean existsByReservationTimeId(Long id);
+    boolean existsByThemeId(Long id);
     void deleteById(Long id);
 }
