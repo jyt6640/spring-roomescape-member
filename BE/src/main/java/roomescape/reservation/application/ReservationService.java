@@ -1,17 +1,21 @@
 package roomescape.reservation.application;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import roomescape.global.exception.ErrorCode;
 import roomescape.global.exception.ReservationException;
 import roomescape.global.exception.ReservationTimeException;
+import roomescape.reservation.application.dto.ReservationAvailableCreateCommand;
+import roomescape.reservation.application.dto.ReservationAvailableResult;
 import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationResult;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationTime;
 import roomescape.reservation.domain.ReservationRepository;
 import roomescape.reservation.domain.ReservationTimeRepository;
+import roomescape.reservation.infrastructure.entity.AvailableReservationTimeEntity;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.ThemeRepository;
 
@@ -53,6 +57,16 @@ public class ReservationService {
         List<Reservation> reservations = reservationRepository.findAll();
         return reservations.stream()
                 .map(ReservationResult::create)
+                .toList();
+    }
+
+    public List<ReservationAvailableResult> getAvailableTime(ReservationAvailableCreateCommand request) {
+        List<AvailableReservationTimeEntity> availableTimes = reservationRepository.findAvailableAllTime(
+                LocalDate.parse(request.date()),
+                request.themeId()
+        );
+        return availableTimes.stream()
+                .map(ReservationAvailableResult::create)
                 .toList();
     }
 

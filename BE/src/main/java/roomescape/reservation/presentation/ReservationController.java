@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import roomescape.reservation.application.ReservationService;
+import roomescape.reservation.application.dto.ReservationAvailableCreateCommand;
+import roomescape.reservation.application.dto.ReservationAvailableResult;
 import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationResult;
+import roomescape.reservation.presentation.dto.AvailableReservationResponse;
 import roomescape.reservation.presentation.dto.ReservationRequest;
 import roomescape.reservation.presentation.dto.ReservationResponse;
 
@@ -46,6 +50,20 @@ public class ReservationController {
         List<ReservationResult> reservationResults = service.getReservations();
         return ResponseEntity.ok(reservationResults.stream()
                 .map(ReservationResponse::createResponse)
+                .toList()
+        );
+    }
+
+    @GetMapping(value = "/reservations", params = {"date", "themeId"})
+    public ResponseEntity<List<AvailableReservationResponse>> getAvailableReservations(
+            @RequestParam("date") String date,
+            @RequestParam("themeId") Long themeId
+    ) {
+        List<ReservationAvailableResult> availableReservations = service.getAvailableTime(
+                ReservationAvailableCreateCommand.create(date, themeId)
+        );
+        return ResponseEntity.ok(availableReservations.stream()
+                .map(AvailableReservationResponse::createResponse)
                 .toList()
         );
     }
