@@ -45,6 +45,12 @@ class ReservationServiceTest {
         );
     }
 
+    private ReservationTime createReservationTime(LocalTime startAt) {
+        return reservationTimeRepository.save(
+                ReservationTime.createWithNullId(startAt)
+        );
+    }
+
     private Theme createTheme() {
         return themeRepository.save(
                 Theme.createWithNullId("공포", "무서움", "/images/theme/1.jpg")
@@ -146,5 +152,32 @@ class ReservationServiceTest {
 
         // then
         assertThat(reservationService.getReservations()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("예약을 할 수 있는 시간을 모두 불러온다")
+    void getAllAvailableTimes() {
+        // given
+        for (int i = 10; i < 15; i++) {
+            createReservationTime(LocalTime.of(i, 0));
+        }
+        reservationService.saveReservation(
+                new ReservationCreateCommand(
+                        "홍길동",
+                        LocalDate.now(),
+                        2L,
+                        1L
+                )
+        );
+
+        // when
+        List<ReservationResult> result =
+                reservationService.getAvailableTime(
+                        LocalDate.now(),
+                        1L
+                );
+
+        // then
+        assertThat(result).hasSize(5);
     }
 }
