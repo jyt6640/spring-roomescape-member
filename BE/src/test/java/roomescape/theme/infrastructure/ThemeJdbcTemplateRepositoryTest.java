@@ -14,8 +14,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import roomescape.theme.domain.Theme;
-import roomescape.theme.domain.ThemeSearch;
+import roomescape.theme.entity.Theme;
+import roomescape.theme.entity.ThemeSearch;
 
 class ThemeJdbcTemplateRepositoryTest {
 

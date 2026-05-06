@@ -8,10 +8,10 @@ import roomescape.theme.application.dto.ThemeCreateCommand;
 import roomescape.theme.application.dto.ThemeResult;
 import roomescape.theme.application.dto.ThemeSearchCreateCommand;
 import roomescape.theme.application.dto.ThemeSearchResult;
-import roomescape.theme.domain.Theme;
-import roomescape.theme.domain.ThemeRepository;
-import roomescape.theme.domain.ThemeSortType;
-import roomescape.theme.domain.ThemeSearch;
+import roomescape.theme.entity.Theme;
+import roomescape.theme.entity.ThemeRepository;
+import roomescape.theme.entity.ThemeSortType;
+import roomescape.theme.entity.ThemeSearch;
 
 @Service
 public class ThemeService {

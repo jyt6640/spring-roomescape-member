@@ -1,6 +1,6 @@
 package roomescape.reservation.application.dto;
 
-import roomescape.reservation.domain.Reservation;
+import roomescape.reservation.entity.Reservation;
 import roomescape.theme.application.dto.ThemeResult;
 
 public record ReservationResult(

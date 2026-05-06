@@ -1,4 +1,4 @@
-package roomescape.theme.domain;
+package roomescape.theme.entity;
 
 public record ThemeSearch(
         Long id,

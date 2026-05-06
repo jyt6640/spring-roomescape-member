@@ -11,7 +11,7 @@ import roomescape.theme.application.dto.ThemeCreateCommand;
 import roomescape.theme.application.dto.ThemeResult;
 import roomescape.theme.application.dto.ThemeSearchCreateCommand;
 import roomescape.theme.application.dto.ThemeSearchResult;
-import roomescape.theme.domain.ThemeSearch;
+import roomescape.theme.entity.ThemeSearch;
 
 public class ThemeServiceTest {
 

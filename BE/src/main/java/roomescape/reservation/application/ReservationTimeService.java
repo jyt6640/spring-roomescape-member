@@ -8,9 +8,9 @@ import roomescape.global.exception.ReservationTimeException;
 import roomescape.global.exception.ThemeException;
 import roomescape.reservation.application.dto.ReservationTimeCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeResult;
-import roomescape.reservation.domain.ReservationRepository;
-import roomescape.reservation.domain.ReservationTime;
-import roomescape.reservation.domain.ReservationTimeRepository;
+import roomescape.reservation.entity.ReservationRepository;
+import roomescape.reservation.entity.ReservationTime;
+import roomescape.reservation.entity.ReservationTimeRepository;
 
 @Service
 public class ReservationTimeService {

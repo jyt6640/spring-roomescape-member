@@ -8,11 +8,11 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import roomescape.reservation.domain.Reservation;
-import roomescape.reservation.domain.ReservationRepository;
-import roomescape.reservation.domain.ReservationTime;
-import roomescape.reservation.domain.AvailableReservation;
-import roomescape.theme.domain.Theme;
+import roomescape.reservation.entity.Reservation;
+import roomescape.reservation.entity.ReservationRepository;
+import roomescape.reservation.entity.ReservationTime;
+import roomescape.reservation.entity.AvailableReservation;
+import roomescape.theme.entity.Theme;
 
 @Repository
 public class ReservationJdbcTemplateRepository implements ReservationRepository {

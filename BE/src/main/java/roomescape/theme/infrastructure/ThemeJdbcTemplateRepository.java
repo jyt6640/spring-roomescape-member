@@ -8,9 +8,9 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import roomescape.theme.domain.Theme;
-import roomescape.theme.domain.ThemeRepository;
-import roomescape.theme.domain.ThemeSearch;
+import roomescape.theme.entity.Theme;
+import roomescape.theme.entity.ThemeRepository;
+import roomescape.theme.entity.ThemeSearch;
 
 @Repository
 public class ThemeJdbcTemplateRepository implements ThemeRepository {

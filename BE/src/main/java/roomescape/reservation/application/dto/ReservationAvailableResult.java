@@ -1,6 +1,6 @@
 package roomescape.reservation.application.dto;
 
-import roomescape.reservation.domain.AvailableReservation;
+import roomescape.reservation.entity.AvailableReservation;
 
 public record ReservationAvailableResult(
         String date,

@@ -14,12 +14,12 @@ import roomescape.theme.FakeThemeRepository;
 import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeCreateCommand;
 import roomescape.reservation.application.dto.ReservationTimeResult;
-import roomescape.reservation.domain.ReservationRepository;
-import roomescape.reservation.domain.ReservationTimeRepository;
+import roomescape.reservation.entity.ReservationRepository;
+import roomescape.reservation.entity.ReservationTimeRepository;
 import roomescape.theme.application.ThemeService;
 import roomescape.theme.application.dto.ThemeCreateCommand;
 import roomescape.theme.application.dto.ThemeResult;
-import roomescape.theme.domain.ThemeRepository;
+import roomescape.theme.entity.ThemeRepository;
 
 class ReservationTimeServiceTest {
 

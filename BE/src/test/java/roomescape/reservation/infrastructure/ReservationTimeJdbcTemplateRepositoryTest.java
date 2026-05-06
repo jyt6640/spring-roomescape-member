@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import roomescape.reservation.domain.ReservationTime;
+import roomescape.reservation.entity.ReservationTime;
 
 class ReservationTimeJdbcTemplateRepositoryTest {
 

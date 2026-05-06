@@ -1,6 +1,6 @@
 package roomescape.theme.application.dto;
 
-import roomescape.theme.domain.ThemeSearch;
+import roomescape.theme.entity.ThemeSearch;
 
 public record ThemeSearchResult(
         Long id,

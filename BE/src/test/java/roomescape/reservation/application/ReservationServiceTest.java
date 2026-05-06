@@ -17,11 +17,11 @@ import roomescape.reservation.application.dto.ReservationAvailableCreateCommand;
 import roomescape.reservation.application.dto.ReservationAvailableResult;
 import roomescape.reservation.application.dto.ReservationCreateCommand;
 import roomescape.reservation.application.dto.ReservationResult;
-import roomescape.reservation.domain.ReservationRepository;
-import roomescape.reservation.domain.ReservationTime;
-import roomescape.reservation.domain.ReservationTimeRepository;
-import roomescape.theme.domain.Theme;
-import roomescape.theme.domain.ThemeRepository;
+import roomescape.reservation.entity.ReservationRepository;
+import roomescape.reservation.entity.ReservationTime;
+import roomescape.reservation.entity.ReservationTimeRepository;
+import roomescape.theme.entity.Theme;
+import roomescape.theme.entity.ThemeRepository;
 
 class ReservationServiceTest {
 

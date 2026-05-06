@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import roomescape.reservation.domain.AvailableReservation;
-import roomescape.reservation.domain.Reservation;
-import roomescape.reservation.domain.ReservationTime;
-import roomescape.theme.domain.Theme;
+import roomescape.reservation.entity.AvailableReservation;
+import roomescape.reservation.entity.Reservation;
+import roomescape.reservation.entity.ReservationTime;
+import roomescape.theme.entity.Theme;
 import roomescape.theme.infrastructure.ThemeJdbcTemplateRepository;
 
 class ReservationJdbcTemplateRepositoryTest {

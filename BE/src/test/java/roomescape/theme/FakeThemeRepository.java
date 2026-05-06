@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import roomescape.theme.domain.Theme;
-import roomescape.theme.domain.ThemeRepository;
-import roomescape.theme.domain.ThemeSearch;
+import roomescape.theme.entity.Theme;
+import roomescape.theme.entity.ThemeRepository;
+import roomescape.theme.entity.ThemeSearch;
 
 public class FakeThemeRepository implements ThemeRepository {
 
