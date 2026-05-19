@@ -31,9 +31,7 @@ public class ReservationValidator {
     ) {
         Long themeId = targetReservation.getTheme().getId();
         reservationRepository.findByDateAndTimeIdAndThemeId(updateCommand.date(), updateCommand.timeId(), themeId)
-                .filter(foundReservation ->
-                        !foundReservation.getId().equals(targetReservation.getId())
-                )
+                .filter(foundReservation -> !foundReservation.equals(targetReservation))
                 .ifPresent(reservation -> {
                     throw new BusinessException(ReservationErrorCode.RESERVATION_ALREADY_EXISTS);
                 });
