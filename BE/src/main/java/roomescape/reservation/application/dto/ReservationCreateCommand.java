@@ -1,8 +1,10 @@
 package roomescape.reservation.application.dto;
 
+import static roomescape.global.validation.ValidationUtils.requireNotBlank;
+import static roomescape.global.validation.ValidationUtils.requireNotNull;
+
 import java.time.LocalDate;
 import roomescape.global.exception.ReservationErrorCode;
-import roomescape.global.validation.ValidationUtils;
 
 public record ReservationCreateCommand(
         String name,
@@ -11,9 +13,9 @@ public record ReservationCreateCommand(
         Long themeId
 ) {
     public ReservationCreateCommand {
-        ValidationUtils.requireNotBlank(name, ReservationErrorCode.RESERVATION_NAME_REQUIRED);
-        ValidationUtils.requireNotNull(date, ReservationErrorCode.RESERVATION_DATE_REQUIRED);
-        ValidationUtils.requireNotNull(timeId, ReservationErrorCode.RESERVATION_TIME_REQUIRED);
-        ValidationUtils.requireNotNull(themeId, ReservationErrorCode.RESERVATION_THEME_REQUIRED);
+        requireNotBlank(name, ReservationErrorCode.RESERVATION_NAME_REQUIRED);
+        requireNotNull(date, ReservationErrorCode.RESERVATION_DATE_REQUIRED);
+        requireNotNull(timeId, ReservationErrorCode.RESERVATION_TIME_REQUIRED);
+        requireNotNull(themeId, ReservationErrorCode.RESERVATION_THEME_REQUIRED);
     }
 }
